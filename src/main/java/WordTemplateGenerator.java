@@ -8,10 +8,11 @@ import java.util.List;
 public class WordTemplateGenerator {
     private static final int TITLE_FONT_SIZE = 12;
     private static final int INFO_FONT_SIZE = 11;
+    private static final int Forget_WORD_FONT_SIZE = 12;
     private static final int WORD_FONT_SIZE = 14;  // X单元格字体大小
     private static final int MEANING_FONT_SIZE = 11;  // Y单元格字体大小
     private static final int CELL_WIDTH = 1700;
-    private static final int CELL_HEIGHT = 1000;
+    private static final int CELL_HEIGHT = 650;
 
     public static void generateDocument(String outputPath, String name, String date1,
                                         String date2, String wordCount,
@@ -120,14 +121,14 @@ public class WordTemplateGenerator {
 
         // 填充复习日期行
         XWPFTableRow dateRow = reviewTable.getRow(1);
-        setCellText(dateRow.getCell(0), "复习日期", INFO_FONT_SIZE);
+        setCellText(dateRow.getCell(0), "复习日期", Forget_WORD_FONT_SIZE);
         for (int i = 0; i < reviewDates.size(); i++) {
             setCellText(dateRow.getCell(i + 1), reviewDates.get(i), INFO_FONT_SIZE);
         }
 
         // 遗忘词数行
         XWPFTableRow forgetRow = reviewTable.getRow(2);
-        setCellText(forgetRow.getCell(0), "遗忘词数", INFO_FONT_SIZE);
+        setCellText(forgetRow.getCell(0), "遗忘词数", Forget_WORD_FONT_SIZE);
 
         // 添加空行
         doc.createParagraph();
@@ -171,8 +172,8 @@ public class WordTemplateGenerator {
                 xPara.setSpacingBefore(0);
                 xPara.setSpacingAfter(0);
                 XWPFRun xRun = xPara.createRun();
-                xRun.setFontSize(WORD_FONT_SIZE);  // 12号字体
-                xRun.setFontFamily("微软雅黑");    // 微软雅黑
+                xRun.setFontSize(WORD_FONT_SIZE);  // 字体大小
+                xRun.setFontFamily("Arial");    // 字体
                 xRun.setBold(true);                // 加粗
                 xRun.setText(pair.getFirst());
 
@@ -183,16 +184,16 @@ public class WordTemplateGenerator {
 
                 // 添加音标
                 XWPFRun phoneticRun = yPara.createRun();
-                phoneticRun.setFontSize(MEANING_FONT_SIZE);  // 11号字体
-                phoneticRun.setFontFamily("宋体");       // 字体
-                phoneticRun.setBold(true);                   // 加粗
+                phoneticRun.setFontSize(MEANING_FONT_SIZE);  // 字体大小
+                phoneticRun.setFontFamily("Arial");       // 字体
+//                phoneticRun.setBold(true);                   // 加粗
                 phoneticRun.setText(pair.getSecond().getFirst());
 
                 // 添加释义
                 XWPFRun meaningRun = yPara.createRun();
                 meaningRun.setFontSize(MEANING_FONT_SIZE);  // 11号字体
                 meaningRun.setFontFamily("宋体");       // 字体
-                meaningRun.setBold(true);                   // 加粗
+//                meaningRun.setBold(true);                   // 加粗
                 meaningRun.setText(" " + pair.getSecond().getSecond());
             }
             rowIndex++;
