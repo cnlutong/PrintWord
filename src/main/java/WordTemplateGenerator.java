@@ -6,7 +6,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 public class WordTemplateGenerator {
-    private static final int TITLE_FONT_SIZE = 12;
+    private static final int TITLE_FONT_SIZE = 14;
     private static final int INFO_FONT_SIZE = 11;
     private static final int Forget_WORD_FONT_SIZE = 12;
     private static final int WORD_FONT_SIZE = 14;  // X单元格字体大小
@@ -165,12 +165,18 @@ public class WordTemplateGenerator {
                 XWPFTableCell cellY = row.getCell(i * 2 + 1);
 
                 setCellProperties(cellX, false);  // X列右边是单线
-                setCellProperties(cellY, true);   // Y列右边是双线
+                // 判断是否是最右侧的Y列 (i == 2 表示最后一组)
+                boolean isLastColumn = (i == 2);
+                setCellProperties(cellY, !isLastColumn);  // 如果不是最后一列，则使用双线；否则使用单线
 
                 // 设置X单元格（单词）
                 XWPFParagraph xPara = cellX.getParagraphs().get(0);
+                xPara.setAlignment(ParagraphAlignment.CENTER);  // 水平居中
+                xPara.setVerticalAlignment(TextAlignment.CENTER);  // 垂直居中
                 xPara.setSpacingBefore(0);
                 xPara.setSpacingAfter(0);
+                cellX.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);  // 单元格级别的垂直居中
+
                 XWPFRun xRun = xPara.createRun();
                 xRun.setFontSize(WORD_FONT_SIZE);  // 字体大小
                 xRun.setFontFamily("Arial");    // 字体
@@ -241,10 +247,11 @@ public class WordTemplateGenerator {
         CTBorder rightBorder = borders.isSetRight() ? borders.getRight() : borders.addNewRight();
         if (isRightBorder) {
             rightBorder.setVal(STBorder.DOUBLE);
+            rightBorder.setSz(BigInteger.valueOf(8));  // 增加双线宽度,原来是4
         } else {
             rightBorder.setVal(STBorder.SINGLE);
+            rightBorder.setSz(BigInteger.valueOf(4));  // 保持单线宽度不变
         }
-        rightBorder.setSz(BigInteger.valueOf(4));
         rightBorder.setSpace(BigInteger.valueOf(0));
         rightBorder.setColor("000000");
     }
@@ -287,7 +294,7 @@ public class WordTemplateGenerator {
         table.setLeftBorder(XWPFTable.XWPFBorderType.SINGLE, 4, 0, "000000");
         table.setRightBorder(XWPFTable.XWPFBorderType.SINGLE, 4, 0, "000000");
         // 设置水平内边框为双线
-        table.setInsideHBorder(XWPFTable.XWPFBorderType.DOUBLE, 4, 0, "000000");
+        table.setInsideHBorder(XWPFTable.XWPFBorderType.DOUBLE, 8, 0, "000000");
     }
 
     public static class Pair<T, U> {
