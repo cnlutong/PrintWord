@@ -185,8 +185,11 @@ public class WordTemplateGenerator {
 
                 // 设置Y单元格（音标和释义）
                 XWPFParagraph yPara = cellY.getParagraphs().get(0);
+                yPara.setAlignment(ParagraphAlignment.CENTER);  // 水平居中
+                yPara.setVerticalAlignment(TextAlignment.CENTER);  // 垂直居中
                 yPara.setSpacingBefore(0);
                 yPara.setSpacingAfter(0);
+                cellY.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);  // 单元格级别的垂直居中
 
                 // 添加音标
                 XWPFRun phoneticRun = yPara.createRun();
